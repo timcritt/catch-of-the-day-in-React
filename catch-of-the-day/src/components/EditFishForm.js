@@ -1,4 +1,5 @@
 import React from 'react';
+import { throwStatement } from '@babel/types';
 
 class EditFishFrom extends React.Component {
   handleChange = (event) => {
@@ -20,6 +21,7 @@ class EditFishFrom extends React.Component {
         </select>
         <textarea name="desc" />
         <input type="text" name="image" />
+        <button onClick={() => this.props.deleteFish(this.props.index)}>Remove Fish</button>
       </div>
     )
   }
