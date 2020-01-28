@@ -5,12 +5,18 @@ import Order from "./Order";
 import sampleFishes from "../sample-fishes";
 import Fish from "./Fish";
 import base from "../base"
+import PropTypes from 'prop-types';
 
 class App extends React.Component {
   state = {
     fishes: {},
     order: {}
   };
+
+  static propTypes = {
+    match: PropTypes.object
+  }
+
   componentDidMount() {
     //reload local storage
     const localStorageRef = localStorage.getItem(`${this.props.match.params.storeId}`);
@@ -31,8 +37,6 @@ class App extends React.Component {
   componentWillUnmount() {
     base.removeBinding(this.ref);
   }
-  
-
   addFish = (fish) => {
     //update a piece of state
     //1. take a copy of the existing state (to avoid muting original)
@@ -67,7 +71,11 @@ class App extends React.Component {
     order[key] = order[key] + 1 || 1;
     this.setState({ order })
   }
-
+  deleteFromOrder = (key) => {
+    const order = { ...this.state.order };
+    delete order[key];
+    this.setState( {order} );  
+  }
   render() {
     return (
       <div className="catch-of-the-day">
@@ -85,14 +93,15 @@ class App extends React.Component {
               )}
           </ul>
         </div>
-        <Order fishes={this.state.fishes} order={this.state.order} />
+        <Order fishes={this.state.fishes} order={this.state.order} deleteFromOrder={this.deleteFromOrder} />
         <Inventory 
           addFish={this.addFish}
           updateFish={this.updateFish}
           deleteFish={this.deleteFish}
           loadSampleFishes={this.loadSampleFishes} 
           fishes={this.state.fishes}
-          />
+          storeId={this.props.match.params.storeId}
+        />
         
       </div>
     )

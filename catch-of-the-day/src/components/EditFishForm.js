@@ -1,7 +1,21 @@
 import React from 'react';
 import { throwStatement } from '@babel/types';
+import PropTypes from 'prop-types';
 
 class EditFishFrom extends React.Component {
+  static propTypes = {
+    fish: PropTypes.shape({
+      image: PropTypes.string,
+      name: PropTypes.string,
+      desc: PropTypes.string,
+      status: PropTypes.string,
+      price: PropTypes.number
+    }),
+    index: PropTypes.string,
+    upadteFish: PropTypes.func
+  }
+
+
   handleChange = (event) => {
     //update fish
     const updatedFish = { 
@@ -19,8 +33,8 @@ class EditFishFrom extends React.Component {
           <option value="available" >Fresh!</option>
           <option value="unavailable" >Sold Out!</option>
         </select>
-        <textarea name="desc" />
-        <input type="text" name="image" />
+        <textarea name="desc" onChange={this.handleChange} value={this.props.fish.desc} />
+        <input type="text" name="image" onChange={this.handleChange} value={this.props.fish.image} />
         <button onClick={() => this.props.deleteFish(this.props.index)}>Remove Fish</button>
       </div>
     )
